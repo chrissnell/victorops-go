@@ -79,7 +79,10 @@ func (a *API) SendAlert(e *Event) (*Response, error) {
 
 	resp, err := http.Post(endpoint, "application/json", bytes.NewBuffer(js))
 	if err != nil {
-		fmt.Println("Error:", err)
+		return &Response{
+			Result:  "failure",
+			Message: fmt.Sprintf("Unable to send message due to: %v", err),
+		}, err
 	}
 
 	if resp.StatusCode != 200 {
